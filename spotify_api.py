@@ -50,7 +50,7 @@ class SpotifyAPI:
         return ids
 
     def get_playcounts_of_album(self, album_id):
-        """Returns a dict like {playcount: song_title, ...} for the album specified.
+        """Returns a dict like {song_title: playcount, ...} for the album specified.
         """
         url = 'https://api-partner.spotify.com/pathfinder/v1/query'
         shahash = '3ea563e1d68f486d8df30f69de9dcedae74c77e684b889ba7408c589d30f7f2e'
@@ -67,7 +67,7 @@ class SpotifyAPI:
         for track in resp.json()['data']['album']['tracks']['items']:
             name = track['track']['name']
             playcount = int(track['track']['playcount'])
-            playcounts[playcount] = name
+            playcounts[name] = playcount
         return playcounts
 
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     for album_id in ids:
         album_playcounts = api.get_playcounts_of_album(album_id)
         all_playcounts.update(album_playcounts)
-    all_playcounts = [(k, v) for k, v in sorted(all_playcounts.items(), key=lambda x: x[0])]
+    all_playcounts = [(k, v) for k, v in sorted(all_playcounts.items(), key=lambda x: x[1])]
 
     for playcount, song_title in all_playcounts:
         print(f'{playcount:,}', song_title)

@@ -1,1 +1,58 @@
-<h1>TEST</h1>
+<style>
+input[type=text], select {
+    width: 400px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 400px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+</style>
+
+<script>
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function confirm(event) {
+    const link = document.getElementById('link').value;
+    const result = document.getElementById('result');
+    const id = /[^\/][\w]+(?=\?)/.exec(link)  // Find after last / and before ?
+    fetch('/album?id=' + id)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+
+            const sortable = [];  // [[playcount, song], ...]
+            for (const song in data) {
+                sortable.push([numberWithCommas(data[song]), song]);
+            }
+
+            sortable.sort(function(a, b) {
+                return parseInt(b[0].replace(',', '')) - parseInt(a[0].replace(',', ''));
+            });
+
+            result.innerText = sortable.join('\n');
+        });
+}
+</script>
+
+<input id="link" type="text" name="link" placeholder="Paste album link here">
+<input type="submit" value="Confirm" onclick="confirm()">
+<p id="result"></p>
