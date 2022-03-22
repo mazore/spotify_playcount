@@ -1,14 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
 
 
 class App(Flask):
     def __init__(self):
         super().__init__(__name__)
 
-        self.route('/test', methods=['GET'])(self.test)
+        self.route('/', methods=['GET'])(self.main_page)
 
-    def test(self):
-        return 'test'
+    def main_page(self):
+        return render_template('main_page.html')
 
 
 app = App()
