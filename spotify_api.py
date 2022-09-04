@@ -10,7 +10,7 @@ class SpotifyAPI:
     def get_bearer_token(self):
         response = requests.get('https://open.spotify.com')
         soup = BeautifulSoup(response.text, 'html.parser')
-        element = soup.find_all(id='config')[0]
+        element = soup.find_all(id='session')[0]
         return json.loads(element.text)['accessToken']
 
     def get_search_result_id(self, search: str):
@@ -74,7 +74,7 @@ class SpotifyAPI:
 # Example usage
 if __name__ == '__main__':
     api = SpotifyAPI()
-    artist_id = api.get_search_result_id('kanye')  # Gets Kanye's artist id
+    artist_id = api.get_search_result_id('tyler, the creator')  # Gets Kanye's artist id
 
     ids = api.get_albums_of_artist(artist_id)  # Gets album ids for kanye
 
@@ -84,5 +84,5 @@ if __name__ == '__main__':
         all_playcounts.update(album_playcounts)
     all_playcounts = [(k, v) for k, v in sorted(all_playcounts.items(), key=lambda x: x[1])]
 
-    for playcount, song_title in all_playcounts:
+    for song_title, playcount in all_playcounts:
         print(f'{playcount:,}', song_title)

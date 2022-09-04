@@ -31,6 +31,10 @@ function numberWithCommas(x) {
 }
 
 function confirm(event) {
+    /*
+    Artist link: https://open.spotify.com/artist/2hPgGN4uhvXAxiXQBIXOmE?si=a2R0cC_uR2uW2fP4CMjGSw
+    Album link:  https://open.spotify.com/album/6pwuKxMUkNg673KETsXPUV?si=OadcplWWQ_a5XK12JaPejA
+    */
     const link = document.getElementById('link').value;
     const result = document.getElementById('result');
     const id = /[^\/][\w]+(?=\?)/.exec(link)  // Find after last / and before ?
